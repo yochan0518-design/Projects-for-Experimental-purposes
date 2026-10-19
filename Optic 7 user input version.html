@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODI - Object Data Interface</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 380px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .chat-box {
+            padding: 15px;
+            height: 250px;
+            overflow-y: auto;
+            border-bottom: 1px solid #eee;
+            background: #fafafa;
+        }
+        .message {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 80%;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .bot {
+            background: #e9ecef;
+            align-self: flex-start;
+            color: #333;
+        }
+        .user {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        .options-container {
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: white;
+        }
+        .btn-option {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .btn-option:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        🤖 ODI (Optic 7) Interface
+    </div>
+    <div id="chat-box" class="chat-box" style="display: flex; flex-direction: column;">
+        <div class="message bot">Hello World! I am odi. My purpose is: I am a robot, made to last and help others with my name, as it stands for Object Data Interface. How can I assist you today?</div>
+    </div>
+    <div class="options-container" id="options">
+        <!-- Interactive buttons will be injected here by JavaScript -->
+    </div>
+</div>
+
+<script>
+    // 1. Blueprint for our Web Robot (OOP Blueprint)
+    class WebRobot {
+        constructor(name, model, purpose) {
+            this.name = name;
+            this.model = model;
+            this.purpose = purpose;
+            
+            // Fixed Knowledge Base (Limited Questions & Answers)
+            this.knowledgeBase = {
+                "What is your name?": `My name is ${this.name}, which stands for Object Data Interface.`,
+                "What model are you?": `I am the ${this.model} model, built to adapt seamlessly.`,
+                "What is your main purpose?": this.purpose,
+                "Can you show a numeric version calculation?": "Syntax region verification: Version 7.4.2 uploaded successfully."
+            };
+        }
+
+        // Action to look up answers based on limited input questions
+        getResponse(question) {
+            return this.knowledgeBase[question] || "System Error: Command not recognized.";
+        }
+    }
+
+    // 2. Instantiate our Robot Object matching your Python configuration
+    const odi = new WebRobot(
+        "odi", 
+        "Optic 7", 
+        "I am a robot, made to last and help others with my name, as it stands for Object Data Interface, I can also download and upload my versions of advanced code in any regions of syntax."
+    );
+
+    const chatBox = document.getElementById('chat-box');
+    const optionsContainer = document.getElementById('options');
+
+    // List of allowed questions
+    const questions = Object.keys(odi.knowledgeBase);
+
+    // Render the interactive buttons
+    function renderOptions() {
+        optionsContainer.innerHTML = '';
+        questions.forEach(q => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-option';
+            btn.innerText = q;
+            btn.onclick = () => askRobot(q);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    // Handle user interaction
+    function askRobot(question) {
+        // Append User Question
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user';
+        userDiv.innerText = question;
+        chatBox.appendChild(userDiv);
+
+        // Get and Append Bot Answer after a tiny delay
+        setTimeout(() => {
+            const answer = odi.getResponse(question);
+            const botDiv = document.createElement('div');
+            botDiv.className = 'message bot';
+            botDiv.innerText = answer;
+            chatBox.appendChild(botDiv);
+            
+            // Auto scroll down
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 300);
+    }
+
+    // Initialize layout
+    renderOptions();
+</script>
+
+</body>
+</html>
